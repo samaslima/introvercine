@@ -2,7 +2,6 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import NetlifyCMS from "astro-netlify-cms";
 import astropodConfig from "./.astropod/astropod.config.json";
 import robotsTxt from "astro-robots-txt";
 
