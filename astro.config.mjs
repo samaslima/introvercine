@@ -1,12 +1,12 @@
-import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
-import astropodConfig from "./.astropod/astropod.config.json";
-import robotsTxt from "astro-robots-txt";
+import { defineConfig } from 'astro/config'
+import mdx from '@astrojs/mdx'
+import sitemap from '@astrojs/sitemap'
+import tailwind from '@astrojs/tailwind'
+import astropodConfig from './.astropod/astropod.config.json'
+import robotsTxt from 'astro-robots-txt'
 
 // https://astro.build/config
-import image from "@astrojs/image";
+import image from '@astrojs/image'
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,9 +15,9 @@ export default defineConfig({
     robotsTxt({
       policy: [
         {
-          userAgent: "*",
-          allow: "/",
-          disallow: "/admin",
+          userAgent: '*',
+          allow: '/',
+          disallow: '/admin',
         },
       ],
     }),
@@ -25,9 +25,9 @@ export default defineConfig({
     sitemap(),
     tailwind(),
     image({
-      serviceEntryPoint: "@astrojs/image/sharp",
-      cacheDir: "./.cache/image",
-      logLevel: "debug",
+      serviceEntryPoint: '@astrojs/image/sharp',
+      cacheDir: './.cache/image',
+      logLevel: 'debug',
     }),
   ],
-});
+})

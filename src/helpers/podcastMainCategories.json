@@ -11,7 +11,10 @@
   { "label": "Leisure", "value": "Leisure" },
   { "label": "Music", "value": "Music" },
   { "label": "News", "value": "News" },
-  { "label": "Religion & Spirituality", "value": "Religion &amp; Spirituality" },
+  {
+    "label": "Religion & Spirituality",
+    "value": "Religion &amp; Spirituality"
+  },
   { "label": "Science", "value": "Science" },
   { "label": "Society & Culture", "value": "Society &amp; Culture" },
   { "label": "Sports", "value": "Sports" },

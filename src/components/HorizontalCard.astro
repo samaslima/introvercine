@@ -1,38 +1,44 @@
 ---
-const { title, cover, desc, url, audioUrl, id, pubDate, duration } = Astro.props;
+const { title, cover, desc, url, audioUrl, id, pubDate, duration } = Astro.props
 
-import astropodConfig from "../../.astropod/astropod.config.json";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-dayjs.extend(localizedFormat);
-import PlayIcon from "./icons/playIcon.astro";
-import PauseIcon from "./icons/pauseIcon.astro";
+import astropodConfig from '../../.astropod/astropod.config.json'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+dayjs.extend(localizedFormat)
+import PlayIcon from './icons/playIcon.astro'
+import PauseIcon from './icons/pauseIcon.astro'
 
-let cover_url = cover ? cover : astropodConfig.cover;
-const displayDate = dayjs(pubDate).format("ll");
+let cover_url = cover ? cover : astropodConfig.cover
+const displayDate = dayjs(pubDate).format('ll')
 
 function formatTime(secs) {
   if (isNaN(secs) || secs < 0) {
-    const segmentedTime = secs.split(":");
-    return segmentedTime[0] == "00" || segmentedTime[0] == "0" ? secs : null;
+    const segmentedTime = secs.split(':')
+    return segmentedTime[0] == '00' || segmentedTime[0] == '0' ? secs : null
   }
 
-  const hours = Math.floor(secs / 3600);
-  const minutes = Math.floor((secs % 3600) / 60);
-  const seconds = Math.floor(secs % 60);
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const formattedseconds = seconds < 10 ? `0${seconds}` : seconds;
+  const hours = Math.floor(secs / 3600)
+  const minutes = Math.floor((secs % 3600) / 60)
+  const seconds = Math.floor(secs % 60)
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes
+  const formattedseconds = seconds < 10 ? `0${seconds}` : seconds
 
-  return hours > 0 ? `${hours}:${formattedMinutes}:${formattedseconds}` : `${minutes}:${formattedseconds}`;
+  return hours > 0
+    ? `${hours}:${formattedMinutes}:${formattedseconds}`
+    : `${minutes}:${formattedseconds}`
 }
 
-const displayDuration = formatTime(duration);
+const displayDuration = formatTime(duration)
 ---
 
 <div class="episode-card">
   <div class="hero-content flex-row">
     <a href={url} class="min-w-fit">
-      <img src={cover_url} alt={title} class="shadow-lg rounded-md w-[4.5rem] h-[4.5rem] md:w-24 md:h-24" />
+      <img
+        src={cover_url}
+        alt={title}
+        class="shadow-lg rounded-md w-[4.5rem] h-[4.5rem] md:w-24 md:h-24"
+      />
     </a>
     <div class="grow w-full overflow-auto">
       <a href={url}>
@@ -40,14 +46,20 @@ const displayDuration = formatTime(duration);
           {title}
         </h2>
         <p class="text-xs font-medium opacity-60">
-          {displayDuration && displayDuration + " • "}
+          {displayDuration && displayDuration + ' • '}
           {displayDate}
         </p>
         <p class="my-1 text-xs md:text-sm line-clamp-2">{desc}</p>
       </a>
     </div>
     <label class="btn btn-circle md:mx-2 swap">
-      <input type="checkbox" class="card-pay-buttons" id={id} data-audio-url={audioUrl} aria-label="Play and pause" />
+      <input
+        type="checkbox"
+        class="card-pay-buttons"
+        id={id}
+        data-audio-url={audioUrl}
+        aria-label="Play and pause"
+      />
       <div class="swap-off">
         <PlayIcon />
       </div>
