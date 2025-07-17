@@ -123,14 +123,6 @@ import AudioMutedIcon from './icons/audioMutedIcon.astro'
     audio.muted = muteIconContainer.checked
   })
 
-  playIconContainer.onchange = function () {
-    if (playIconContainer.checked) {
-      audio.play()
-    } else {
-      audio.pause()
-    }
-  }
-
   seekSlider.addEventListener('input', () => {
     currentTimeContainer.textContent = calculateTime(seekSlider.value)
   })
@@ -145,10 +137,22 @@ import AudioMutedIcon from './icons/audioMutedIcon.astro'
   })
 
   const playButtons = document.querySelectorAll('.card-pay-buttons')
+  let activeEpisode = null
+
+  playIconContainer.onchange = function () {
+    playIconContainer.checked ? audio.play() : audio.pause()
+
+    const activeEpisodeBtn = Array.from(playButtons).find(btn => {
+      return btn.id === activeEpisode
+    })
+
+    activeEpisodeBtn.checked = playIconContainer.checked
+  }
 
   playButtons.forEach(function (btn) {
     btn.addEventListener('click', () => {
       if (!audio.src.includes(btn.dataset.audioUrl)) {
+        activeEpisode = btn.id
         musicPlayer?.classList.remove('hidden')
         musicPlayer?.classList.add('flex')
         footer?.classList.add('pb-24')
@@ -159,7 +163,7 @@ import AudioMutedIcon from './icons/audioMutedIcon.astro'
         currentTimeContainer.textContent = '0:00'
         audio.src = btn.dataset.audioUrl
         audioDownloadLink.href = btn.dataset.audioUrl
-        disableOthersPlayButtons(btn.id, playButtons)
+        disableOthersPlayButtons()
         playIconContainer.checked = true
         audio.play()
       } else {
@@ -168,11 +172,9 @@ import AudioMutedIcon from './icons/audioMutedIcon.astro'
     })
   })
 
-  function disableOthersPlayButtons(id, playButtons) {
-    playButtons.forEach(function (btn) {
-      if (btn.id != id) {
-        btn.checked = false
-      }
+  const disableOthersPlayButtons = () => {
+    playButtons.forEach(btn => {
+      if (btn.id !== activeEpisode) btn.checked = false
     })
   }
 </script>
