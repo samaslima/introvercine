@@ -13,7 +13,7 @@ const cover = isFullUrl(astropodConfig.cover)
   ? astropodConfig.cover
   : astropodConfig.link + astropodConfig.cover
 
-export async function get(context) {
+export async function GET() {
   let podcast = {
     rss: {
       $: {
@@ -141,9 +141,7 @@ export async function get(context) {
   let builder = new xml2js.Builder({ cdata: true })
   let xml = builder.buildObject(podcast)
 
-  return {
-    body: xml,
-  }
+  return new Response(xml, { headers: { 'Content-Type': 'text/xml' } })
 }
 
 function isFullUrl(urlString) {
