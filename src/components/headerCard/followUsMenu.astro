@@ -23,14 +23,14 @@ for (const key in social) {
 
 {
   hasSocial && (
-    <div class="dropdown dropdown-hover dropdown-end">
-      <label tabindex="0" class="btn btn-ghost m-1 px-2 sm:px-4">
+    <div class="dropdown-end dropdown-hover dropdown">
+      <label tabindex="0" class="btn-ghost btn m-1 px-2 sm:px-4">
         <ExternalLinkIcon />
         <span class="hidden md:inline-block">Follow us</span>
       </label>
       <ul
         tabindex="0"
-        class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+        class="dropdown-content menu z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
       >
         {social.instagram && (
           <li>

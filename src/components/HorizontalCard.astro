@@ -37,22 +37,22 @@ const displayDuration = formatTime(duration)
       <img
         src={cover_url}
         alt={title}
-        class="shadow-lg rounded-md w-[4.5rem] h-[4.5rem] md:w-24 md:h-24"
+        class="h-[4.5rem] w-[4.5rem] rounded-md shadow-lg md:h-24 md:w-24"
       />
     </a>
-    <div class="grow w-full overflow-auto">
+    <div class="w-full grow overflow-auto">
       <a href={url}>
-        <h2 class="md:text-xl text-sm font-semibold truncate">
+        <h2 class="truncate text-sm font-semibold md:text-xl">
           {title}
         </h2>
         <p class="text-xs font-medium opacity-60">
           {displayDuration && displayDuration + ' • '}
           {displayDate}
         </p>
-        <p class="my-1 text-xs md:text-sm line-clamp-2">{desc}</p>
+        <p class="my-1 line-clamp-2 text-xs md:text-sm">{desc}</p>
       </a>
     </div>
-    <label class="btn btn-circle md:mx-2 swap">
+    <label class="swap btn-circle btn md:mx-2">
       <input
         type="checkbox"
         class="card-pay-buttons"

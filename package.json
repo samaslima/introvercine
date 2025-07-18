@@ -11,7 +11,7 @@
     "@astrojs/sitemap": "~3.0.x",
     "@astrojs/tailwind": "~5.0.x",
     "astro": "^4.16.18",
-    "daisyui": "^3.1.7",
+    "daisyui": "^4.12.24",
     "dayjs": "^1.11.9",
     "marked": "^7.0.2",
     "marked-plaintext": "^0.0.2",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
     "prettier": "^3.6.2",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.6.14"
   }
 }
