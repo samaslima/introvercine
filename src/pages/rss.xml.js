@@ -1,153 +1,55 @@
-import xml2js from 'xml2js'
-import dayjs from 'dayjs'
 import astropodConfig from '../../.astropod/astropod.config.json'
 import { getCollection } from 'astro:content'
-let episode = await getCollection('episode')
-episode.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-if (astropodConfig.feedSize) episode = episode.slice(0, astropodConfig.feedSize)
 
-import { marked } from 'marked'
+import { markdownToTxt } from 'markdown-to-txt'
+import { Podcast } from 'podcast'
 
-const lastBuildDate = dayjs().format('ddd, DD MMM YYYY hh:mm:ss ZZ')
-const cover = isFullUrl(astropodConfig.cover)
-  ? astropodConfig.cover
-  : astropodConfig.link + astropodConfig.cover
+let episodes = await getCollection('episode')
+episodes.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 
 export async function GET() {
-  let podcast = {
-    rss: {
-      $: {
-        version: '2.0',
-        'xmlns:itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
-        'xmlns:podcast':
-          'https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md',
-        'xmlns:atom': 'http://www.w3.org/2005/Atom',
-        'xmlns:content': 'http://purl.org/rss/1.0/modules/content/',
-      },
-      channel: [
-        {
-          title: astropodConfig.name,
-          description: astropodConfig.description,
-          link: astropodConfig.link,
-          copyright: astropodConfig.copyright,
-          author: astropodConfig.author,
-          generator: ['Astropod'],
-          lastBuildDate: lastBuildDate,
-          language: astropodConfig.language,
-          'itunes:author': astropodConfig.author,
-          'itunes:image': { $: { href: cover } },
-          'itunes:summary': astropodConfig.description,
-          'itunes:type': 'episodic',
-          'itunes:explicit': astropodConfig.explicit,
-          'itunes:owner': {
-            'itunes:name': astropodConfig.owner,
-            'itunes:email': astropodConfig.email,
-          },
-          image: {
-            link: astropodConfig.link,
-            title: astropodConfig.name,
-            url: cover,
-          },
-          'atom:link': [
-            {
-              $: {
-                href: `${astropodConfig.link}/rss.xml`,
-                rel: 'self',
-                type: 'application/rss+xml',
-              },
-            },
-            {
-              $: {
-                href: `https://pubsubhubbub.appspot.com/`,
-                rel: 'hub',
-                type: 'application/rss+xml',
-              },
-            },
-          ],
-        },
-      ],
-    },
-  }
-
-  podcast.rss.channel[0].category = astropodConfig.category.map(
-    category => category,
-  )
-  podcast.rss.channel[0]['itunes:category'] = astropodConfig.category.map(
-    category => ({
-      $: {
-        text: category,
-      },
-    }),
-  )
-
-  // podcast.rss.channel[0]["itunes:category"] = {
-  //   $: {
-  //     text: astropodConfig.category,
-  //   },
-  // };
-
-  if (astropodConfig.fundingUrl) {
-    const fundingUrl = isFullUrl(astropodConfig.fundingUrl)
-      ? astropodConfig.fundingUrl
-      : astropodConfig.link + astropodConfig.fundingUrl
-    podcast.rss.channel[0]['podcast:funding'] = {
-      $: { url: fundingUrl },
-      _: astropodConfig.fundingText,
-    }
-  }
-
-  const items = episode.map(episode => {
-    let item = {
-      title: episode.data.title,
-      description: marked.parse(episode.body),
-      pubDate: dayjs(episode.data.pubDate).format(
-        'ddd, DD MMM YYYY hh:mm:ss ZZ',
-      ),
-      link: `${astropodConfig.link}/episode/${episode.slug}/`,
-      guid: `${astropodConfig.link}/episode/${episode.slug}/`,
-      'itunes:episode': episode.data.episode,
-      'itunes:season': episode.data.season,
-      'itunes:episodeType': episode.data.episodeType,
-      'itunes:explicit':
-        episode.data.explicit === undefined
-          ? astropodConfig.explicit
-          : episode.data.explicit,
-      enclosure: {
-        $: {
-          url: isFullUrl(episode.data.audioUrl)
-            ? episode.data.audioUrl
-            : astropodConfig.link + episode.data.audioUrl,
-          length: episode.data.size && episode.data.size * 1000000,
-          type: 'audio/mpeg',
-        },
-      },
-      'itunes:duration': episode.data.duration,
-    }
-    const cover_url = episode.data.cover
-      ? episode.data.cover
-      : astropodConfig.cover
-    item['itunes:image'] = {
-      $: {
-        href: isFullUrl(cover_url)
-          ? cover_url
-          : astropodConfig.link + cover_url,
-      },
-    }
-    return item
+  const feed = new Podcast({
+    title: astropodConfig.name,
+    description: astropodConfig.description,
+    siteUrl: astropodConfig.link,
+    feedUrl: astropodConfig.link + astropodConfig.feed,
+    imageUrl: astropodConfig.link + astropodConfig.cover,
+    author: astropodConfig.author,
+    language: astropodConfig.language,
+    categories: astropodConfig.category,
+    itunesAuthor: astropodConfig.author,
+    itunesImage: astropodConfig.link + astropodConfig.cover,
+    itunesSummary: astropodConfig.description,
+    itunesType: 'episodic',
+    itunesExplicit: astropodConfig.explicit,
+    itunesOwner: { name: astropodConfig.author, email: astropodConfig.email },
   })
 
-  podcast.rss.channel[0].item = items
+  episodes.forEach(episode => {
+    feed.addItem({
+      title: episode.data.title,
+      description: markdownToTxt(episode.body),
+      imageUrl: astropodConfig.link + episode.data.cover,
+      url: `${astropodConfig.link}/episode/${episode.slug}/`,
+      guid: `${astropodConfig.link}/episode/${episode.slug}/`,
+      date: episode.data.pubDate,
+      enclosure: {
+        url: astropodConfig.link + episode.data.audioUrl,
+        size: episode.data.size * 1000000,
+        type: 'audio/mpeg',
+      },
+      itunesAuthor: astropodConfig.author,
+      itunesSummary: markdownToTxt(episode.body),
+      itunesEpisode: episode.data.episode,
+      itunesSeason: episode.data.season,
+      itunesImage: astropodConfig.link + episode.data.cover,
+      itunesEpisodeType: episode.data.episodeType,
+      itunesExplicit: episode.data.explicit,
+      itunesDuration: episode.data.duration,
+    })
+  })
 
-  let builder = new xml2js.Builder({ cdata: true })
-  let xml = builder.buildObject(podcast)
-
-  return new Response(xml, { headers: { 'Content-Type': 'text/xml' } })
-}
-
-function isFullUrl(urlString) {
-  try {
-    return Boolean(new URL(urlString))
-  } catch (e) {
-    return false
-  }
+  return new Response(feed.buildXml(), {
+    headers: { 'Content-Type': 'text/xml' },
+  })
 }

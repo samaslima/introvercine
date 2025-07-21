@@ -13,9 +13,9 @@
     "astro": "^4.16.18",
     "daisyui": "^4.12.24",
     "dayjs": "^1.11.9",
-    "marked": "^7.0.2",
-    "marked-plaintext": "^0.0.2",
-    "xml2js": "^0.6.2"
+    "lodash": "^4.17.21",
+    "markdown-to-txt": "^2.0.1",
+    "podcast": "^2.0.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",

@@ -6,19 +6,20 @@
   "name": "Não Ouça",
   "banner": "/banner.webp",
   "pageSize": 15,
-  "fundingUrl": "",
   "owner": "",
   "favicon": "/favicon.svg",
   "explicit": true,
   "cover": "/cover.jpg",
-  "language": "pt",
+  "feed": "/rss.xml",
+  "language": "pt-br",
   "link": "https://your-website-url.netlify.app",
   "email": "your.email@gmail.com",
   "description": "Não espere um podcast profissional, apenas um casal compartilhando conversas sobre coisas que gostam =)",
-  "category": [
-    "TV &amp; Film &amp; Film Reviews",
-    "Society &amp; Culture",
-    "Arts &amp; Books"
+  "category": ["Film", "Culture", "Books"],
+  "itunesCategory": [
+    { "text": "TV", "subcasts": [{ "text": "Film Reviews" }] },
+    { "text": "Society", "subcasts": [{ "text": "Culture" }] },
+    { "text": "Arts", "subcasts": [{ "text": "Books" }] }
   ],
   "feedSize": ""
 }
