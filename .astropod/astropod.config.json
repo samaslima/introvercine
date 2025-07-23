@@ -12,8 +12,8 @@
   "cover": "/cover.jpg",
   "feed": "/rss.xml",
   "language": "pt-br",
-  "link": "https://your-website-url.netlify.app",
-  "email": "your.email@gmail.com",
+  "link": "https://naoouca.com",
+  "email": "",
   "description": "Não espere um podcast profissional, apenas um casal compartilhando conversas sobre coisas que gostam =)",
   "category": ["Film", "Culture", "Books"],
   "itunesCategory": [
