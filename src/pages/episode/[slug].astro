@@ -25,7 +25,6 @@ const { Content } = await entry.render()
 const description = markdownToTxt(entry.body)
 ---
 
-<!-- prettier-ignore-attribute -->
 <EpisodeLayout
   title={episode.title}
   pubDate={episode.pubDate}
@@ -34,13 +33,11 @@ const description = markdownToTxt(entry.body)
   description={description}
   cover={episode.cover}
 >
-  <!-- prettier-ignore -->
-  <Content></Content>
+  <Content />
 </EpisodeLayout>
 
 <AudioPlayer />
 
-<!-- prettier-ignore -->
 <script define:vars={{ episode }}>
   const musicPlayer = document.getElementById('audio-player-container')
   const audioDownloadLink = document.getElementById('audio-download-link')
