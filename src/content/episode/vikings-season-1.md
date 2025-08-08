@@ -11,4 +11,4 @@ season: 1
 episodeType: full
 ---
 
-
+Conversa com spoilers sobre a primeira temporada da série Vikings. Nomes estrangeiros citados no episódio foram pronunciados em sotaque sueco.
